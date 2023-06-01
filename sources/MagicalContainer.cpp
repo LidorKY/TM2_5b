@@ -10,6 +10,7 @@ using namespace std;
 MagicalContainer::MagicalContainer()
 {
     this->container = vector<int>();
+    this->primes = vector<int *>();
 }
 
 void MagicalContainer::addElement(int num)
