@@ -185,8 +185,12 @@ int MagicalContainer::AscendingIterator::operator*()
 MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator++()
 {
     // Pre-increment operator
-    this->index++;
-    return *this;
+    if (this->index < this->pointer_container->container.size())
+    {
+        this->index++;
+        return *this;
+    }
+    throw runtime_error("Iterator out of bounds");
 }
 
 MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::begin()
@@ -467,8 +471,15 @@ int MagicalContainer::PrimeIterator::operator*()
 MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator++()
 {
     // Pre-increment operator
-    this->index++;
-    return *this;
+    if (this->index < this->pointer_prime_container->container.size())
+    {
+        this->index++;
+        return *this;
+    }
+    else
+    {
+        throw runtime_error("Cannot increment iterator past end of container");
+    }
 }
 
 MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::begin()
