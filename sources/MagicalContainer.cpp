@@ -75,12 +75,16 @@ MagicalContainer::AscendingIterator::AscendingIterator()
     this->pointer_container = nullptr;
 }
 
-MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer container)
+MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer &container)
 {
     this->index = 0;
     this->pointer_container = &container;
 }
-
+MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer &container, size_t index)
+{
+    this->index = index;
+    this->pointer_container = &container;
+}
 MagicalContainer::AscendingIterator::AscendingIterator(const AscendingIterator &other)
 {
     // Copy constructor
@@ -179,7 +183,7 @@ bool MagicalContainer::AscendingIterator::operator<(const MagicalContainer::Asce
 int MagicalContainer::AscendingIterator::operator*()
 {
     // Dereference operator
-    return this->pointer_container->container[this->index];
+    return this->pointer_container->container.at(this->index);
 }
 
 MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator++()
@@ -196,15 +200,13 @@ MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operat
 MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::begin()
 {
     // Begin iterator
-    this->index = 0;
-    return *this;
+    return AscendingIterator(*(this->pointer_container), 0);
 }
 
 MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::end()
 {
     // End iterator
-    this->index = this->pointer_container->container.size();
-    return *this;
+    return AscendingIterator(*(this->pointer_container), this->pointer_container->container.size());
 }
 
 /* SideCrossIterator */
@@ -216,7 +218,7 @@ MagicalContainer::SideCrossIterator::SideCrossIterator()
     this->pointer_container = nullptr;
 }
 
-MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer container)
+MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container)
 {
     // Constructor with container argument
     this->index = 0;
@@ -357,7 +359,7 @@ MagicalContainer::PrimeIterator::PrimeIterator()
     this->pointer_prime_container = nullptr;
 }
 
-MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer container)
+MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer &container)
 {
     // Constructor with container argument
     this->index = 0;
@@ -470,7 +472,7 @@ bool MagicalContainer::PrimeIterator::operator<(const MagicalContainer::PrimeIte
 int MagicalContainer::PrimeIterator::operator*()
 {
     // Dereference operator
-    return this->pointer_prime_container->container[this->index];
+    return this->pointer_prime_container->container.at(this->index);
 }
 
 MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator++()

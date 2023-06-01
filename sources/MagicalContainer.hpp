@@ -27,13 +27,14 @@ public:
     class AscendingIterator
     {
     private:
-        unsigned long index;
+        size_t index;
         MagicalContainer *pointer_container;
 
     public:
         /* Constructors */
         AscendingIterator();
-        AscendingIterator(MagicalContainer container);
+        AscendingIterator(MagicalContainer &container);
+        AscendingIterator(MagicalContainer &container, size_t index);
         AscendingIterator(const AscendingIterator &other);
         AscendingIterator(AscendingIterator &&other) noexcept; // Move constructor
 
@@ -70,7 +71,7 @@ public:
     public:
         /* Constructors */
         SideCrossIterator();
-        SideCrossIterator(MagicalContainer container);
+        SideCrossIterator(MagicalContainer &container);
         SideCrossIterator(const SideCrossIterator &other);
         SideCrossIterator(SideCrossIterator &&other) noexcept; // Move constructor
 
@@ -107,7 +108,7 @@ public:
     public:
         /* Constructors */
         PrimeIterator();
-        PrimeIterator(MagicalContainer container);
+        PrimeIterator(MagicalContainer &container);
         PrimeIterator(const PrimeIterator &other);
         PrimeIterator(PrimeIterator &&other) noexcept; // Move constructor
 
