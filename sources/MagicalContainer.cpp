@@ -148,9 +148,7 @@ bool MagicalContainer::AscendingIterator::operator<(const MagicalContainer::Asce
 int &MagicalContainer::AscendingIterator::operator*()
 {
     // Dereference operator
-    int x = 5;
-    int *p = &x;
-    return *p;
+    return this->pointer_container->container[this->index];
 }
 
 MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator++()
