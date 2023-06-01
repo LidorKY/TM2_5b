@@ -12,7 +12,7 @@ class MagicalContainer
 {
 private:
     vector<int> container;
-    vector<int> primes;
+    vector<int*> primes;
 
 public:
     /* Constructor */
@@ -102,13 +102,14 @@ public:
     class PrimeIterator
     {
     private:
-        unsigned long index;
+        size_t index;
         MagicalContainer *pointer_prime_container;
 
     public:
         /* Constructors */
         PrimeIterator();
         PrimeIterator(MagicalContainer &container);
+        PrimeIterator(MagicalContainer &container, size_t index);
         PrimeIterator(const PrimeIterator &other);
         PrimeIterator(PrimeIterator &&other) noexcept; // Move constructor
 

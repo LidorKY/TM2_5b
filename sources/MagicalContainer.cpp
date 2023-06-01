@@ -24,10 +24,10 @@ void MagicalContainer::addElement(int num)
     if (this->isPrime(num))
     {
         // Find the position to insert the new prime
-        auto it_prime = lower_bound(this->primes.begin(), this->primes.end(), num);
-
+        int *ptr = &num;
+        auto it_prime = lower_bound(this->primes.begin(), this->primes.end(), ptr);
         // Insert the new prime at the determined position
-        this->primes.insert(it_prime, num);
+        this->primes.insert(it_prime, ptr);
     }
 }
 
@@ -56,6 +56,10 @@ bool MagicalContainer::isPrime(int num)
     if (num <= 1)
     {
         return false;
+    }
+    if (num == 2 || num == 3)
+    {
+        return true;
     }
     for (int i = 2; i < num; i++)
     {
@@ -366,6 +370,13 @@ MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer &container)
     this->pointer_prime_container = &container;
 }
 
+MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer &container, size_t index)
+{
+    // Constructor with container and index argument
+    this->index = index;
+    this->pointer_prime_container = &container;
+}
+
 MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator &other)
 {
     // Copy constructor
@@ -472,7 +483,7 @@ bool MagicalContainer::PrimeIterator::operator<(const MagicalContainer::PrimeIte
 int MagicalContainer::PrimeIterator::operator*()
 {
     // Dereference operator
-    return this->pointer_prime_container->container.at(this->index);
+    return *(this->pointer_prime_container->primes.at(this->index));
 }
 
 MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator++()
@@ -492,13 +503,11 @@ MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator++()
 MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::begin()
 {
     // Begin iterator
-    this->index = 0;
-    return *this;
+    return PrimeIterator(*this->pointer_prime_container, 0);
 }
 
 MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::end()
 {
     // End iterator
-    this->index = this->pointer_prime_container->container.size();
-    return *this;
+    return PrimeIterator(*this->pointer_prime_container, this->pointer_prime_container->primes.size());
 }
