@@ -22,6 +22,7 @@ public:
     void addElement(int num);
     void removeElement(int num);
     int size();
+    bool isPrime(int num);
 
     class AscendingIterator
     {
@@ -124,7 +125,7 @@ public:
         bool operator<(const PrimeIterator &other) const;
 
         /* Dereference operator */
-        int &operator*();
+        int operator*();
 
         /* Pre-increment operator */
         PrimeIterator &operator++();
