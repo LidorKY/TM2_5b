@@ -328,6 +328,11 @@ int &MagicalContainer::SideCrossIterator::operator*()
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator++()
 {
     // Pre-increment operator
+    if (this->index < this->pointer_container->container.size())
+    {
+        this->index++;
+        return *this;
+    }
     return *this;
 }
 
