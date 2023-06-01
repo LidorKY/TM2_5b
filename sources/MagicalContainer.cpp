@@ -145,7 +145,7 @@ bool MagicalContainer::AscendingIterator::operator<(const MagicalContainer::Asce
     return false;
 }
 
-int &MagicalContainer::AscendingIterator::operator*()
+int MagicalContainer::AscendingIterator::operator*()
 {
     // Dereference operator
     return this->pointer_container->container[this->index];
@@ -177,77 +177,113 @@ MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::end()
 MagicalContainer::SideCrossIterator::SideCrossIterator()
 {
     // Default constructor
+    // this->index = 0;
+    // this->pointer_container = nullptr;
 }
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer container)
 {
     // Constructor with container argument
+    // this->index = 0;
+    // this->pointer_container = &container;
 }
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator &other)
 {
     // Copy constructor
+    // this->index = other.index;
+    // this->pointer_container = other.pointer_container;
 }
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(SideCrossIterator &&other) noexcept
 {
     // Move constructor
+    // this->index = other.index;
+    // this->pointer_container = other.pointer_container;
 }
 
 MagicalContainer::SideCrossIterator::~SideCrossIterator()
 {
     // Destructor
+    // this->index = 0;
+    // delete this->pointer_container;
 }
 
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator &other)
 {
     // Assignment operator
+    // if (this == &other)
+    // {
+    //     return *this;
+    // }
+    // else
+    // {
+    //     this->index = other.index;
+    //     this->pointer_container = other.pointer_container;
+    // }
     return *this;
 }
 
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(SideCrossIterator &&other) noexcept
 {
     // Move assignment operator
+    // if (this == &other)
+    // {
+    //     return *this;
+    // }
+    // else
+    // {
+    //     this->index = other.index;
+    //     this->pointer_container = other.pointer_container;
+    // }
     return *this;
 }
 
 bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator &other) const
 {
     // Equality operator
+    // if (this->index == other.index && this->pointer_container == other.pointer_container)
+    // {
+    //     return true;
+    // }
     return false;
 }
 
 bool MagicalContainer::SideCrossIterator::operator!=(const SideCrossIterator &other) const
 {
     // Inequality operator
+    // if (this->index != other.index || this->pointer_container != other.pointer_container)
+    // {
+    //     return true;
+    // }
     return false;
 }
 
 bool MagicalContainer::SideCrossIterator::operator>(const MagicalContainer::SideCrossIterator &other) const
 {
     // Greater than operator
-    if (this->index > other.index)
-    {
-        return true;
-    }
+    // if (this->index > other.index)
+    // {
+    //     return true;
+    // }
     return false;
 }
 
 bool MagicalContainer::SideCrossIterator::operator<(const MagicalContainer::SideCrossIterator &other) const
 {
     // Less than operator
-    if (this->index < other.index)
-    {
-        return true;
-    }
+    // if (this->index < other.index)
+    // {
+    //     return true;
+    // }
     return false;
 }
 
 int &MagicalContainer::SideCrossIterator::operator*()
 {
     // Dereference operator
-    static int dummyValue = 0;
-    return dummyValue;
+    static int a = 0;
+    return a;
 }
 
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator++()
@@ -322,20 +358,20 @@ bool MagicalContainer::PrimeIterator::operator!=(const PrimeIterator &other) con
 bool MagicalContainer::PrimeIterator::operator>(const MagicalContainer::PrimeIterator &other) const
 {
     // Greater than operator
-    if (this->index > other.index)
-    {
-        return true;
-    }
+    // if (this->index > other.index)
+    // {
+    //     return true;
+    // }
     return false;
 }
 
 bool MagicalContainer::PrimeIterator::operator<(const MagicalContainer::PrimeIterator &other) const
 {
     // Less than operator
-    if (this->index < other.index)
-    {
-        return true;
-    }
+    // if (this->index < other.index)
+    // {
+    //     return true;
+    // }
     return false;
 }
 

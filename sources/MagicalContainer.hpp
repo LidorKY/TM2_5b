@@ -12,6 +12,7 @@ class MagicalContainer
 {
 private:
     vector<int> container;
+    vector<int> primes;
 
 public:
     /* Constructor */
@@ -49,7 +50,7 @@ public:
         bool operator<(const AscendingIterator &other) const;
 
         /* Dereference operator */
-        int &operator*();
+        int operator*();
 
         /* Pre-increment operator */
         AscendingIterator &operator++();
@@ -100,7 +101,7 @@ public:
     {
     private:
         unsigned long index;
-        MagicalContainer *pointer_container;
+        MagicalContainer *pointer_prime_container;
 
     public:
         /* Constructors */
