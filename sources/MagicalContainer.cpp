@@ -25,7 +25,8 @@ void MagicalContainer::addElement(int num)
     {
         // Find the position to insert the new prime
         int *ptr = &num;
-        auto it_prime = lower_bound(this->primes.begin(), this->primes.end(), ptr);
+        auto it_prime = lower_bound(this->primes.begin(), this->primes.end(), ptr, [](int *a, int *b)
+                                    { return *a < *b; });
         // Insert the new prime at the determined position
         this->primes.insert(it_prime, ptr);
     }
@@ -297,10 +298,10 @@ bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator &ot
 bool MagicalContainer::SideCrossIterator::operator!=(const SideCrossIterator &other) const
 {
     // Inequality operator
-    // if (this->index != other.index || this->pointer_container != other.pointer_container)
-    // {
-    //     return true;
-    // }
+    if (this->index != other.index || this->pointer_container != other.pointer_container)
+    {
+        return true;
+    }
     return false;
 }
 
@@ -449,14 +450,14 @@ bool MagicalContainer::PrimeIterator::operator==(const PrimeIterator &other) con
 bool MagicalContainer::PrimeIterator::operator!=(const PrimeIterator &other) const
 {
     // Inequality operator
-    // if (this->index != other.index)
-    // {
-    //     return true;
-    // }
-    // else if (this->pointer_prime_container != other.pointer_prime_container)
-    // {
-    //     return true;
-    // }
+    if (this->index != other.index)
+    {
+        return true;
+    }
+    else if (this->pointer_prime_container != other.pointer_prime_container)
+    {
+        return true;
+    }
     return false;
 }
 
