@@ -105,6 +105,10 @@ MagicalContainer::AscendingIterator::~AscendingIterator()
 MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator=(const AscendingIterator &other)
 {
     // Assignment operator
+    if (this->pointer_container != other.pointer_container)
+    {
+        throw runtime_error("Cannot assign iterator from different container");
+    }
     if (this == &other)
     {
         return *this;
@@ -239,6 +243,10 @@ MagicalContainer::SideCrossIterator::~SideCrossIterator()
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator &other)
 {
     // Assignment operator
+    if (this->pointer_container != other.pointer_container)
+    {
+        throw runtime_error("Cannot assign iterator from different container");
+    }
     if (this == &other)
     {
         return *this;
@@ -371,6 +379,10 @@ MagicalContainer::PrimeIterator::~PrimeIterator()
 MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator=(const PrimeIterator &other)
 {
     // Assignment operator
+    if (this->pointer_prime_container != other.pointer_prime_container)
+    {
+        throw runtime_error("Cannot assign iterator from different container");
+    }
     if (this == &other)
     {
         return *this;
