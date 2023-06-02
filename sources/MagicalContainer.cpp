@@ -491,7 +491,7 @@ int MagicalContainer::PrimeIterator::operator*()
 MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator++()
 {
     // Pre-increment operator
-    if (this->index < this->pointer_prime_container->container.size())
+    if (this->index < this->pointer_prime_container->primes.size())
     {
         this->index++;
         return *this;
