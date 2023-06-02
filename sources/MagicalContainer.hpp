@@ -67,6 +67,7 @@ public:
     {
     private:
         size_t side_cross_index;
+        size_t counter;
         bool is_left;
         MagicalContainer *pointer_container;
 
@@ -74,7 +75,7 @@ public:
         /* Constructors */
         SideCrossIterator();
         SideCrossIterator(MagicalContainer &container);
-        SideCrossIterator(MagicalContainer &container, size_t index, bool is_left);
+        SideCrossIterator(MagicalContainer &container, size_t index, bool is_left, size_t counter);
         SideCrossIterator(const SideCrossIterator &other);
         SideCrossIterator(SideCrossIterator &&other) noexcept; // Move constructor
 

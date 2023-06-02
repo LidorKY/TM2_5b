@@ -1,6 +1,7 @@
 #include "MagicalContainer.hpp"
 #include <iostream>
 #include <vector>
+#include <stdexcept>
 using namespace std;
 
 using namespace std;
@@ -232,6 +233,7 @@ MagicalContainer::SideCrossIterator::SideCrossIterator()
 {
     // Default constructor
     this->side_cross_index = 0;
+    this->counter = 0;
     this->is_left = true;
     this->pointer_container = nullptr;
 }
@@ -240,14 +242,16 @@ MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &contain
 {
     // Constructor with container argument
     this->side_cross_index = 0;
+    this->counter = 0;
     this->is_left = true;
     this->pointer_container = &container;
 }
 
-MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container, size_t index, bool is_left)
+MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container, size_t index, bool is_left, size_t counter)
 {
     // Constructor with container and index arguments
     this->side_cross_index = index;
+    this->counter = counter;
     this->is_left = is_left;
     this->pointer_container = &container;
 }
@@ -256,6 +260,7 @@ MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator &
 {
     // Copy constructor
     this->side_cross_index = other.side_cross_index;
+    this->counter = other.counter;
     this->is_left = other.is_left;
     this->pointer_container = other.pointer_container;
 }
@@ -284,6 +289,7 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
     else
     {
         this->side_cross_index = other.side_cross_index;
+        this->counter = other.counter;
         this->is_left = other.is_left;
         this->pointer_container = other.pointer_container;
     }
@@ -299,7 +305,7 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
 bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator &other) const
 {
     // Equality operator
-    if (this->side_cross_index == other.side_cross_index && this->pointer_container == other.pointer_container && this->is_left == other.is_left)
+    if (this->side_cross_index == other.side_cross_index && this->pointer_container == other.pointer_container && this->is_left == other.is_left && this->counter == other.counter)
     {
         return true;
     }
@@ -309,7 +315,7 @@ bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator &ot
 bool MagicalContainer::SideCrossIterator::operator!=(const SideCrossIterator &other) const
 {
     // Inequality operator
-    if (this->side_cross_index != other.side_cross_index || this->pointer_container != other.pointer_container || this->is_left != other.is_left)
+    if (this->side_cross_index != other.side_cross_index || this->pointer_container != other.pointer_container || this->is_left != other.is_left || this->counter != other.counter)
     {
         return true;
     }
@@ -345,6 +351,11 @@ int &MagicalContainer::SideCrossIterator::operator*()
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator++()
 {
     // Pre-increment operator
+    this->counter++;
+    if (this->counter > this->pointer_container->container.size())
+    {
+        throw runtime_error("Iterator out of bounds");
+    }
     bool even = this->pointer_container->container.size() % 2 == 0;
     if (even)
     {
@@ -397,7 +408,7 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
 MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::begin()
 {
     // Begin iterator
-    return SideCrossIterator(*this->pointer_container, 0, true);
+    return SideCrossIterator(*this->pointer_container, 0, true, 0);
 }
 
 MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::end()
