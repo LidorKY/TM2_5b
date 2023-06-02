@@ -244,10 +244,11 @@ MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &contain
     this->pointer_container = &container;
 }
 
-MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container, size_t index)
+MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container, size_t index, bool is_left)
 {
     // Constructor with container and index arguments
     this->side_cross_index = index;
+    this->is_left = is_left;
     this->pointer_container = &container;
 }
 
@@ -353,29 +354,9 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
             {
                 this->side_cross_index = this->pointer_container->container.size() - this->side_cross_index - 1;
                 this->is_left = false;
+                return *this;
             }
-            return *this;
-        }
-        else
-        {
-            if (this->side_cross_index > this->pointer_container->container.size() / 2)
-            {
-                this->side_cross_index = this->pointer_container->container.size() - this->side_cross_index;
-                this->is_left = true;
-            }
-            return *this;
-        }
-    }
-    else // not zugi
-    {
-        if (this->is_left)
-        {
-            if (this->side_cross_index < this->pointer_container->container.size() / 2)
-            {
-                this->side_cross_index = this->pointer_container->container.size() - this->side_cross_index - 1;
-                this->is_left = false;
-            }
-            return *this;
+            throw runtime_error("Iterator out of bounds");
         }
         else
         {
@@ -383,22 +364,50 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
             {
                 this->side_cross_index = this->pointer_container->container.size() - this->side_cross_index;
                 this->is_left = true;
+                return *this;
             }
-            return *this;
+            throw runtime_error("Iterator out of bounds");
         }
     }
-    return *this;
+    else // not zugi
+    {
+        if (this->is_left)
+        {
+            if (this->side_cross_index <= this->pointer_container->container.size() / 2)
+            {
+                this->side_cross_index = this->pointer_container->container.size() - this->side_cross_index - 1;
+                this->is_left = false;
+                return *this;
+            }
+            throw runtime_error("Iterator out of bounds");
+        }
+        else
+        {
+            if (this->side_cross_index >= this->pointer_container->container.size() / 2)
+            {
+                this->side_cross_index = this->pointer_container->container.size() - this->side_cross_index;
+                this->is_left = true;
+                return *this;
+            }
+            throw runtime_error("Iterator out of bounds");
+        }
+    }
+    throw runtime_error("Iterator out of bounds");
 }
-
 MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::begin()
 {
     // Begin iterator
-    return *this;
+    return SideCrossIterator(*this->pointer_container, 0, true);
 }
 
 MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::end()
 {
     // End iterator
+    // if (this->pointer_container->container.size() % 2 == 0)
+    // {
+    //     return SideCrossIterator(*this->pointer_container, this->pointer_container->container.size() / 2, false);
+    // }
+    // return SideCrossIterator(*this->pointer_container, this->pointer_container->container.size() / 2, true);
     return *this;
 }
 
@@ -529,7 +538,6 @@ bool MagicalContainer::PrimeIterator::operator<(const MagicalContainer::PrimeIte
 int MagicalContainer::PrimeIterator::operator*()
 {
     // Dereference operator
-    // return *(this->pointer_prime_container->primes.at(this->prime_index));
     return *this->pointer_prime_container->primes.at(this->prime_index);
 }
 

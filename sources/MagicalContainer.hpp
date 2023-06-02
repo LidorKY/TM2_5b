@@ -74,7 +74,7 @@ public:
         /* Constructors */
         SideCrossIterator();
         SideCrossIterator(MagicalContainer &container);
-        SideCrossIterator(MagicalContainer &container, size_t index);
+        SideCrossIterator(MagicalContainer &container, size_t index, bool is_left);
         SideCrossIterator(const SideCrossIterator &other);
         SideCrossIterator(SideCrossIterator &&other) noexcept; // Move constructor
 
