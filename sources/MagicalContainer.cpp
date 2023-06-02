@@ -229,197 +229,70 @@ MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::end()
 
 /* SideCrossIterator */
 
-MagicalContainer::SideCrossIterator::SideCrossIterator()
-{
-    // Default constructor
-    this->side_cross_index = 0;
-    this->counter = 0;
-    this->is_left = true;
-    this->pointer_container = nullptr;
-}
-
 MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container)
-{
-    // Constructor with container argument
-    this->side_cross_index = 0;
-    this->counter = 0;
-    this->is_left = true;
-    this->pointer_container = &container;
-}
+    : container(&container), index(0) {}
 
-MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container, size_t index, bool is_left, size_t counter)
-{
-    // Constructor with container and index arguments
-    this->side_cross_index = index;
-    this->counter = counter;
-    this->is_left = is_left;
-    this->pointer_container = &container;
-}
+MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container, size_t index)
+    : container(&container), index(index) {}
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator &other)
-{
-    // Copy constructor
-    this->side_cross_index = other.side_cross_index;
-    this->counter = other.counter;
-    this->is_left = other.is_left;
-    this->pointer_container = other.pointer_container;
-}
-
-MagicalContainer::SideCrossIterator::SideCrossIterator(SideCrossIterator &&other) noexcept
-{
-    // Move constructor
-}
-
-MagicalContainer::SideCrossIterator::~SideCrossIterator()
-{
-    // Destructor
-}
+    : container(other.container), index(other.index) {}
 
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator &other)
 {
-    // Assignment operator
-    if (this->pointer_container != other.pointer_container)
+    if (this->container != other.container)
+        throw std::runtime_error("");
+    if (this != &other)
     {
-        throw runtime_error("Cannot assign iterator from different container");
+        this->container = other.container;
+        this->index = other.index;
     }
-    if (this == &other)
-    {
-        return *this;
-    }
-    else
-    {
-        this->side_cross_index = other.side_cross_index;
-        this->counter = other.counter;
-        this->is_left = other.is_left;
-        this->pointer_container = other.pointer_container;
-    }
-    return *this;
-}
-
-MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(SideCrossIterator &&other) noexcept
-{
-    // Move assignment operator
     return *this;
 }
 
 bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator &other) const
 {
-    // Equality operator
-    if (this->side_cross_index == other.side_cross_index && this->pointer_container == other.pointer_container && this->is_left == other.is_left && this->counter == other.counter)
-    {
-        return true;
-    }
-    return false;
+    return this->index == other.index;
 }
 
 bool MagicalContainer::SideCrossIterator::operator!=(const SideCrossIterator &other) const
 {
-    // Inequality operator
-    if (this->side_cross_index != other.side_cross_index || this->pointer_container != other.pointer_container || this->is_left != other.is_left || this->counter != other.counter)
-    {
-        return true;
-    }
-    return false;
+    return !(*this == other);
 }
 
-bool MagicalContainer::SideCrossIterator::operator>(const MagicalContainer::SideCrossIterator &other) const
+bool MagicalContainer::SideCrossIterator::operator<(const SideCrossIterator &other) const
 {
-    // Greater than operator
-    if (this->side_cross_index > other.side_cross_index)
-    {
-        return true;
-    }
-    return false;
+    return this->index < other.index;
 }
 
-bool MagicalContainer::SideCrossIterator::operator<(const MagicalContainer::SideCrossIterator &other) const
+bool MagicalContainer::SideCrossIterator::operator>(const SideCrossIterator &other) const
 {
-    // Less than operator
-    if (this->side_cross_index < other.side_cross_index)
-    {
-        return true;
-    }
-    return false;
+    return this->index > other.index;
 }
 
-int &MagicalContainer::SideCrossIterator::operator*()
+int MagicalContainer::SideCrossIterator::operator*()
 {
-    // Dereference operator
-    return this->pointer_container->container.at(this->side_cross_index);
+    return (*container).container[i];
 }
 
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator++()
 {
-    // Pre-increment operator
-    this->counter++;
-    if (this->counter > this->pointer_container->container.size())
-    {
-        throw runtime_error("Iterator out of bounds");
-    }
-    bool even = this->pointer_container->container.size() % 2 == 0;
-    if (even)
-    {
-        if (this->is_left)
-        {
-            if (this->side_cross_index < this->pointer_container->container.size() / 2)
-            {
-                this->side_cross_index = this->pointer_container->container.size() - this->side_cross_index - 1;
-                this->is_left = false;
-                return *this;
-            }
-            throw runtime_error("Iterator out of bounds");
-        }
-        else
-        {
-            if (this->side_cross_index >= this->pointer_container->container.size() / 2)
-            {
-                this->side_cross_index = this->pointer_container->container.size() - this->side_cross_index;
-                this->is_left = true;
-                return *this;
-            }
-            throw runtime_error("Iterator out of bounds");
-        }
-    }
-    else // not zugi
-    {
-        if (this->is_left)
-        {
-            if (this->side_cross_index <= this->pointer_container->container.size() / 2)
-            {
-                this->side_cross_index = this->pointer_container->container.size() - this->side_cross_index - 1;
-                this->is_left = false;
-                return *this;
-            }
-            throw runtime_error("Iterator out of bounds");
-        }
-        else
-        {
-            if (this->side_cross_index >= this->pointer_container->container.size() / 2)
-            {
-                this->side_cross_index = this->pointer_container->container.size() - this->side_cross_index;
-                this->is_left = true;
-                return *this;
-            }
-            throw runtime_error("Iterator out of bounds");
-        }
-    }
-    throw runtime_error("Iterator out of bounds");
-}
-MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::begin()
-{
-    // Begin iterator
-    return SideCrossIterator(*this->pointer_container, 0, true, 0);
+    if (index >= (*container).container.size())
+        throw std::runtime_error("out of bounds");
+    ++index;
+    i = (index % 2 != 0) ? (*container).container.size() - 1 - index / 2 : index / 2;
+    return *this;
 }
 
-MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::end()
+// Definitions for begin and end functions for MagicalContainer
+MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::begin() const
 {
-    // End iterator
-    // if (this->pointer_container->container.size() % 2 == 0)
-    // {
-    //     return SideCrossIterator(*this->pointer_container, this->pointer_container->container.size() / 2, false);
-    // }
-    // return SideCrossIterator(*this->pointer_container, this->pointer_container->container.size() / 2, true);
-    return *this;
+    return SideCrossIterator((*this->container), 0);
+}
+
+MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::end() const
+{
+    return SideCrossIterator((*this->container), (*container).container.size());
 }
 
 /* PrimeIterator */
