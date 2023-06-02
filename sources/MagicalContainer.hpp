@@ -65,26 +65,41 @@ public:
 
     class SideCrossIterator
     {
-    public:
+    private:
         MagicalContainer *container;
         size_t index;
         size_t i;
 
+    public:
+        /* Constructors */
+        SideCrossIterator();
         SideCrossIterator(MagicalContainer &container);
         SideCrossIterator(MagicalContainer &container, size_t index);
         SideCrossIterator(const SideCrossIterator &other);
-        ~SideCrossIterator() {}
+        SideCrossIterator(SideCrossIterator &&other) noexcept; // Move constructor
 
-        SideCrossIterator begin() const;
-        SideCrossIterator end() const;
+        /* Destructor */
+        ~SideCrossIterator();
 
+        /* Assignment operators */
         SideCrossIterator &operator=(const SideCrossIterator &other);
+        SideCrossIterator &operator=(SideCrossIterator &&other) noexcept; // Move assignment operator
+
+        /* Comparison operators */
         bool operator==(const SideCrossIterator &other) const;
         bool operator!=(const SideCrossIterator &other) const;
-        bool operator<(const SideCrossIterator &other) const;
         bool operator>(const SideCrossIterator &other) const;
+        bool operator<(const SideCrossIterator &other) const;
+
+        /* Dereference operator */
         int operator*();
+
+        /* Pre-increment operator */
         SideCrossIterator &operator++();
+
+        /* Pointers */
+        SideCrossIterator begin();
+        SideCrossIterator end();
     };
 
     class PrimeIterator
@@ -124,4 +139,16 @@ public:
         PrimeIterator begin();
         PrimeIterator end();
     };
+
+    /* Copy Constructor */
+    MagicalContainer(const MagicalContainer &other);
+
+    /* Copy Assignment Operator */
+    MagicalContainer &operator=(const MagicalContainer &other);
+
+    /* Move Constructor */
+    MagicalContainer(MagicalContainer &&other) noexcept;
+
+    /* Move Assignment Operator */
+    MagicalContainer &operator=(MagicalContainer &&other) noexcept;
 };
