@@ -231,36 +231,35 @@ MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::end()
 MagicalContainer::SideCrossIterator::SideCrossIterator()
 {
     // Default constructor
-    this->index = 0;
+    this->side_cross_index = 0;
+    this->is_left = true;
     this->pointer_container = nullptr;
 }
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container)
 {
     // Constructor with container argument
-    this->index = 0;
+    this->side_cross_index = 0;
+    this->is_left = true;
     this->pointer_container = &container;
 }
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator &other)
 {
     // Copy constructor
-    this->index = other.index;
+    this->side_cross_index = other.side_cross_index;
+    this->is_left = other.is_left;
     this->pointer_container = other.pointer_container;
 }
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(SideCrossIterator &&other) noexcept
 {
     // Move constructor
-    this->index = other.index;
-    this->pointer_container = other.pointer_container;
 }
 
 MagicalContainer::SideCrossIterator::~SideCrossIterator()
 {
     // Destructor
-    // this->index = 0;
-    // delete this->pointer_container;
 }
 
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator &other)
@@ -276,7 +275,8 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
     }
     else
     {
-        this->index = other.index;
+        this->side_cross_index = other.side_cross_index;
+        this->is_left = other.is_left;
         this->pointer_container = other.pointer_container;
     }
     return *this;
@@ -285,22 +285,13 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(SideCrossIterator &&other) noexcept
 {
     // Move assignment operator
-    // if (this == &other)
-    // {
-    //     return *this;
-    // }
-    // else
-    // {
-    //     this->index = other.index;
-    //     this->pointer_container = other.pointer_container;
-    // }
     return *this;
 }
 
 bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator &other) const
 {
     // Equality operator
-    if (this->index == other.index && this->pointer_container == other.pointer_container)
+    if (this->side_cross_index == other.side_cross_index && this->pointer_container == other.pointer_container && this->is_left == other.is_left)
     {
         return true;
     }
@@ -310,7 +301,7 @@ bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator &ot
 bool MagicalContainer::SideCrossIterator::operator!=(const SideCrossIterator &other) const
 {
     // Inequality operator
-    if (this->index != other.index || this->pointer_container != other.pointer_container)
+    if (this->side_cross_index != other.side_cross_index || this->pointer_container != other.pointer_container || this->is_left != other.is_left)
     {
         return true;
     }
@@ -320,7 +311,7 @@ bool MagicalContainer::SideCrossIterator::operator!=(const SideCrossIterator &ot
 bool MagicalContainer::SideCrossIterator::operator>(const MagicalContainer::SideCrossIterator &other) const
 {
     // Greater than operator
-    if (this->index > other.index)
+    if (this->side_cross_index > other.side_cross_index)
     {
         return true;
     }
@@ -330,7 +321,7 @@ bool MagicalContainer::SideCrossIterator::operator>(const MagicalContainer::Side
 bool MagicalContainer::SideCrossIterator::operator<(const MagicalContainer::SideCrossIterator &other) const
 {
     // Less than operator
-    if (this->index < other.index)
+    if (this->side_cross_index < other.side_cross_index)
     {
         return true;
     }
@@ -340,17 +331,29 @@ bool MagicalContainer::SideCrossIterator::operator<(const MagicalContainer::Side
 int &MagicalContainer::SideCrossIterator::operator*()
 {
     // Dereference operator
-    static int a = 0;
-    return a;
+    return this->pointer_container->container.at(this->side_cross_index);
 }
 
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator++()
 {
     // Pre-increment operator
-    if (this->index < this->pointer_container->container.size())
+    if (this->is_left)
     {
-        this->index++;
-        return *this;
+        if (this->side_cross_index < this->pointer_container->container.size() / 2)
+        {
+            this->side_cross_index = this->pointer_container->container.size() - this->side_cross_index - 1;
+            this->is_left = false;
+            return *this;
+        }
+    }
+    else
+    {
+        if (this->side_cross_index < this->pointer_container->container.size() / 2)
+        {
+            this->side_cross_index = this->pointer_container->container.size() - this->side_cross_index;
+            this->is_left = true;
+            return *this;
+        }
     }
     return *this;
 }
@@ -358,6 +361,7 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
 MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::begin()
 {
     // Begin iterator
+
     return *this;
 }
 

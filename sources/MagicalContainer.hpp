@@ -66,7 +66,8 @@ public:
     class SideCrossIterator
     {
     private:
-        unsigned long index;
+        size_t side_cross_index;
+        bool is_left;
         MagicalContainer *pointer_container;
 
     public:
