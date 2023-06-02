@@ -12,11 +12,12 @@ class MagicalContainer
 {
 private:
     vector<int> container;
-    vector<int*> primes;
+    vector<int *> primes;
 
 public:
     /* Constructor */
     MagicalContainer();
+    ~MagicalContainer();
 
     /* Functions */
     void addElement(int num);
@@ -102,7 +103,7 @@ public:
     class PrimeIterator
     {
     private:
-        size_t index;
+        size_t prime_index;
         MagicalContainer *pointer_prime_container;
 
     public:
