@@ -11,19 +11,27 @@ namespace ariel
 class MagicalContainer
 {
 private:
-    vector<int> container;
-    vector<int *> primes;
+    vector<int> container; // The container
+    vector<int *> primes;  // The primes in the container
 
 public:
     /* Constructor */
-    MagicalContainer();
-    ~MagicalContainer();
+    MagicalContainer();                                  // Default constructor
+    ~MagicalContainer();                                 // Destructor
+    MagicalContainer(const MagicalContainer &other);     // Copy constructor
+    MagicalContainer(MagicalContainer &&other) noexcept; // Move constructor
+
+    /* Copy Assignment Operator */
+    MagicalContainer &operator=(const MagicalContainer &other);
+
+    /* Move Assignment Operator */
+    MagicalContainer &operator=(MagicalContainer &&other) noexcept;
 
     /* Functions */
-    void addElement(int num);
-    void removeElement(int num);
-    int size();
-    bool isPrime(int num);
+    void addElement(int num);    // Add element to the container
+    void removeElement(int num); // Remove element from the container
+    int size();                  // Return the size of the container
+    bool isPrime(int num);       // Return true if the number is prime, else return false
 
     class AscendingIterator
     {
@@ -110,17 +118,17 @@ public:
 
     public:
         /* Constructors */
-        PrimeIterator();
-        PrimeIterator(MagicalContainer &container);
-        PrimeIterator(MagicalContainer &container, size_t index);
-        PrimeIterator(const PrimeIterator &other);
-        PrimeIterator(PrimeIterator &&other) noexcept; // Move constructor
+        PrimeIterator();                                          // Default constructor
+        PrimeIterator(MagicalContainer &container);               // Constructor
+        PrimeIterator(MagicalContainer &container, size_t index); // Constructor
+        PrimeIterator(const PrimeIterator &other);                // Copy constructor
+        PrimeIterator(PrimeIterator &&other) noexcept;            // Move constructor
 
         /* Destructor */
         ~PrimeIterator();
 
         /* Assignment operators */
-        PrimeIterator &operator=(const PrimeIterator &other);
+        PrimeIterator &operator=(const PrimeIterator &other);     // Copy assignment operator
         PrimeIterator &operator=(PrimeIterator &&other) noexcept; // Move assignment operator
 
         /* Comparison operators */
@@ -139,16 +147,4 @@ public:
         PrimeIterator begin();
         PrimeIterator end();
     };
-
-    /* Copy Constructor */
-    MagicalContainer(const MagicalContainer &other);
-
-    /* Copy Assignment Operator */
-    MagicalContainer &operator=(const MagicalContainer &other);
-
-    /* Move Constructor */
-    MagicalContainer(MagicalContainer &&other) noexcept;
-
-    /* Move Assignment Operator */
-    MagicalContainer &operator=(MagicalContainer &&other) noexcept;
 };

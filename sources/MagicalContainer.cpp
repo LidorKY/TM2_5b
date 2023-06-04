@@ -488,77 +488,77 @@ bool MagicalContainer::PrimeIterator::operator==(const PrimeIterator &other) con
     // Equality operator
     if (this->prime_index == other.prime_index && this->pointer_prime_container == other.pointer_prime_container) // If same object
     {
-        return true;
+        return true; // Return true if same object and index is same as other index and container is same as other container (same object)
     }
     else if (this->prime_index == other.prime_index && this->pointer_prime_container != other.pointer_prime_container) // If different object
     {
-        return false;
+        return false; // Return false if different object and index is same as other index but container is not same as other container (different object)
     }
-    return false;
+    return false; // Return false if different object and index is not same as other index and container is not same as other container (different object)
 }
 
 bool MagicalContainer::PrimeIterator::operator!=(const PrimeIterator &other) const
 {
     // Inequality operator
-    if (this->prime_index != other.prime_index) // If different index
+    if (this->prime_index != other.prime_index) // If different index (different object)
     {
-        return true;
+        return true; // Return true if different index
     }
-    else if (this->pointer_prime_container != other.pointer_prime_container)
+    else if (this->pointer_prime_container != other.pointer_prime_container) // If different container (different object)
     {
-        return true;
+        return true; // Return true if different container
     }
-    return false;
+    return false; // Return false if same object
 }
 
 bool MagicalContainer::PrimeIterator::operator>(const MagicalContainer::PrimeIterator &other) const
 {
     // Greater than operator
-    if (this->prime_index > other.prime_index)
+    if (this->prime_index > other.prime_index) // If greater than
     {
-        return true;
+        return true; // Return true if greater than
     }
-    return false;
+    return false; // Return false if not greater than
 }
 
 bool MagicalContainer::PrimeIterator::operator<(const MagicalContainer::PrimeIterator &other) const
 {
     // Less than operator
-    if (this->prime_index < other.prime_index)
+    if (this->prime_index < other.prime_index) // If less than
     {
-        return true;
+        return true; // Return true if less than
     }
-    return false;
+    return false; // Return false if not less than
 }
 
 int MagicalContainer::PrimeIterator::operator*()
 {
     // Dereference operator
-    return *this->pointer_prime_container->primes.at(this->prime_index);
+    return *this->pointer_prime_container->primes.at(this->prime_index); // Return value at index
 }
 
 MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator++()
 {
     // Pre-increment operator
-    if (this->prime_index < this->pointer_prime_container->primes.size())
+    if (this->prime_index < this->pointer_prime_container->primes.size()) // If index is less than size
     {
-        this->prime_index++;
-        return *this;
+        this->prime_index++; // Increment index
+        return *this;        // Return this
     }
     else
     {
-        throw runtime_error("Cannot increment iterator past end of container");
+        throw runtime_error("Cannot increment iterator past end of container"); // Throw exception
     }
 }
 
 MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::begin()
 {
     // Begin iterator
-    return PrimeIterator(*this->pointer_prime_container, 0);
+    return PrimeIterator(*this->pointer_prime_container, 0); // Return iterator at index 0
 }
 
 MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::end()
 {
     // End iterator
-    return PrimeIterator(*this->pointer_prime_container, this->pointer_prime_container->primes.size());
+    return PrimeIterator(*this->pointer_prime_container, this->pointer_prime_container->primes.size()); // Return iterator at index size
 }
