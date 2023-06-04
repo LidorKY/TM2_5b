@@ -247,7 +247,14 @@ MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &contain
 {
     this->container = &container;
     this->index = index;
-    i = (index % 2 != 0) ? container.container.size() - 1 - index / 2 : index / 2;
+    if (index % 2 != 0)
+    {
+        i = container.container.size() - 1 - index / 2;
+    }
+    else
+    {
+        i = index / 2;
+    }
 }
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator &other)
@@ -352,28 +359,30 @@ int MagicalContainer::SideCrossIterator::operator*()
         throw std::runtime_error("Iterator not initialized");
     }
 
-    return (*container).container[i];
+    return container->container[i];
 }
 
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator++()
 {
-    if (container == nullptr)
+    if (container == nullptr) // If container is not initialized
     {
         throw std::runtime_error("Iterator not initialized");
     }
 
-    if (index >= (*container).container.size())
+    if (index >= container->container.size()) // If index is out of bounds
     {
         throw std::runtime_error("Iterator out of bounds");
     }
 
     ++index;
 
+    // If index is odd, go backwards
+
     if (index % 2 != 0)
     {
-        i = (*container).container.size() - 1 - index / 2;
+        i = container->container.size() - 1 - index / 2;
     }
-    else
+    else // If index is even, go forwards
     {
         i = index / 2;
     }
@@ -383,22 +392,22 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
 
 MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::begin()
 {
-    if (container == nullptr)
+    if (container == nullptr) // If container is not initialized
     {
         throw std::runtime_error("Iterator not initialized");
     }
 
-    return SideCrossIterator(*container, 0);
+    return SideCrossIterator(*container, 0); // Return iterator at index 0
 }
 
 MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::end()
 {
-    if (container == nullptr)
+    if (container == nullptr) // If container is not initialized
     {
         throw std::runtime_error("Iterator not initialized");
     }
 
-    return SideCrossIterator(*container, (*container).container.size());
+    return SideCrossIterator(*container, container->container.size());
 }
 
 /* PrimeIterator */
@@ -406,29 +415,29 @@ MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::end()
 MagicalContainer::PrimeIterator::PrimeIterator()
 {
     // Default constructor
-    this->prime_index = 0;
-    this->pointer_prime_container = nullptr;
+    this->prime_index = 0;                   // Prime index
+    this->pointer_prime_container = nullptr; // Pointer to container
 }
 
 MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer &container)
 {
     // Constructor with container argument
-    this->prime_index = 0;
-    this->pointer_prime_container = &container;
+    this->prime_index = 0;                      // Prime index
+    this->pointer_prime_container = &container; // Pointer to container
 }
 
 MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer &container, size_t index)
 {
     // Constructor with container and index argument
-    this->prime_index = index;
-    this->pointer_prime_container = &container;
+    this->prime_index = index;                  // Prime index
+    this->pointer_prime_container = &container; // Pointer to container
 }
 
 MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator &other)
 {
     // Copy constructor
-    this->prime_index = other.prime_index;
-    this->pointer_prime_container = other.pointer_prime_container;
+    this->prime_index = other.prime_index;                         // Prime index
+    this->pointer_prime_container = other.pointer_prime_container; // Pointer to container
 }
 
 MagicalContainer::PrimeIterator::PrimeIterator(PrimeIterator &&other) noexcept
@@ -446,15 +455,15 @@ MagicalContainer::PrimeIterator::~PrimeIterator()
 MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator=(const PrimeIterator &other)
 {
     // Assignment operator
-    if (this->pointer_prime_container != other.pointer_prime_container)
+    if (this->pointer_prime_container != other.pointer_prime_container) // If container is not initialized
     {
-        throw runtime_error("Cannot assign iterator from different container");
+        throw runtime_error("Cannot assign iterator from different container"); // Throw exception
     }
-    if (this == &other)
+    if (this == &other) // If same object
     {
         return *this;
     }
-    else
+    else // If different object
     {
         this->prime_index = other.prime_index;
         this->pointer_prime_container = other.pointer_prime_container;
@@ -465,26 +474,26 @@ MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator=(cons
 MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator=(PrimeIterator &&other) noexcept
 {
     // Move assignment operator
-    // if (this == &other)
-    // {
-    //     return *this;
-    // }
-    // else
-    // {
-    //     this->index = other.index;
-    //     this->pointer_prime_container = other.pointer_prime_container;
-    // }
+    if (this != &other) // If different object
+    {
+        this->prime_index = other.prime_index;
+        this->pointer_prime_container = other.pointer_prime_container;
+
+        other.prime_index = 0;
+        other.pointer_prime_container = nullptr;
+    }
+
     return *this;
 }
 
 bool MagicalContainer::PrimeIterator::operator==(const PrimeIterator &other) const
 {
     // Equality operator
-    if (this->prime_index == other.prime_index && this->pointer_prime_container == other.pointer_prime_container)
+    if (this->prime_index == other.prime_index && this->pointer_prime_container == other.pointer_prime_container) // If same object
     {
         return true;
     }
-    else
+    else if (this->prime_index == other.prime_index && this->pointer_prime_container != other.pointer_prime_container) // If different object
     {
         return false;
     }
@@ -494,7 +503,7 @@ bool MagicalContainer::PrimeIterator::operator==(const PrimeIterator &other) con
 bool MagicalContainer::PrimeIterator::operator!=(const PrimeIterator &other) const
 {
     // Inequality operator
-    if (this->prime_index != other.prime_index)
+    if (this->prime_index != other.prime_index) // If different index
     {
         return true;
     }
