@@ -74,9 +74,9 @@ public:
     class SideCrossIterator
     {
     private:
-        MagicalContainer *pointer_container;
         size_t index;
         size_t jumping_index;
+        MagicalContainer *pointer_container;
 
     public:
         /* Constructors */
