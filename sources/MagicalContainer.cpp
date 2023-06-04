@@ -230,60 +230,60 @@ MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::end()
 
 MagicalContainer::SideCrossIterator::SideCrossIterator()
 {
-    container = nullptr;
+    pointer_container = nullptr;
     index = 0;
-    i = 0;
+    jumping_index = 0;
 }
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container)
 {
-    this->container = &container;
+    this->pointer_container = &container;
     index = 0;
-    i = 0;
+    jumping_index = 0;
 }
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container, size_t index)
 {
-    this->container = &container;
+    this->pointer_container = &container;
     this->index = index;
     if (index % 2 != 0) // Odd index number (right side)
     {
-        i = container.container.size() - 1 - index / 2; // Calculate i for right side
+        jumping_index = container.container.size() - 1 - index / 2; // Calculate i for right side
     }
     else
     {
-        i = index / 2; // Calculate i for left side
+        jumping_index = index / 2; // Calculate i for left side
     }
 }
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator &other)
 {
-    container = other.container; // Copy container
-    index = other.index;         // Copy index
-    i = other.i;                 // Copy i
+    pointer_container = other.pointer_container; // Copy container
+    index = other.index;                         // Copy index
+    jumping_index = other.jumping_index;         // Copy i
 }
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(SideCrossIterator &&other) noexcept
-    : container(other.container), index(other.index), i(other.i)
+    : pointer_container(other.pointer_container), index(other.index), jumping_index(other.jumping_index)
 {
-    other.container = nullptr; // Default container
-    other.index = 0;           // Default index
-    other.i = 0;               // Default i
+    other.pointer_container = nullptr; // Default container
+    other.index = 0;                   // Default index
+    other.jumping_index = 0;           // Default i
 }
 
 MagicalContainer::SideCrossIterator::~SideCrossIterator() {}
 
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator &other)
 {
-    if (this->container != other.container) // Check if iterators are from the same container
+    if (this->pointer_container != other.pointer_container) // Check if iterators are from the same container
     {
         throw std::runtime_error("Cannot assign iterator from different container"); // Iterators are from different containers
     }
 
     if (this != &other) // Check if iterators are the same
     {
-        this->index = other.index; // Copy index
-        this->i = other.i;         // Copy i
+        this->index = other.index;                 // Copy index
+        this->jumping_index = other.jumping_index; // Copy i
     }
     return *this;
 }
@@ -292,20 +292,20 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
 {
     if (this != &other) // Check if iterators are the same
     {
-        this->container = other.container; // Move container
-        this->index = other.index;         // Move index
-        this->i = other.i;                 // Move i
+        this->pointer_container = other.pointer_container; // Move container
+        this->index = other.index;                         // Move index
+        this->jumping_index = other.jumping_index;         // Move i
 
-        other.container = nullptr; // Default container
-        other.index = 0;           // Default index
-        other.i = 0;               // Default i
+        other.pointer_container = nullptr; // Default container
+        other.index = 0;                   // Default index
+        other.jumping_index = 0;           // Default i
     }
     return *this; // Return this
 }
 
 bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator &other) const
 {
-    if (this->container == other.container && this->index == other.index) // Check if iterators are the same
+    if (this->pointer_container == other.pointer_container && this->index == other.index) // Check if iterators are the same
     {
         return true; // Iterators are the same
     }
@@ -353,22 +353,22 @@ bool MagicalContainer::SideCrossIterator::operator<(const SideCrossIterator &oth
 
 int MagicalContainer::SideCrossIterator::operator*()
 {
-    if (container == nullptr) // If container is not initialized
+    if (pointer_container == nullptr) // If container is not initialized
     {
         throw std::runtime_error("Iterator not initialized"); // Iterator is not initialized
     }
 
-    return container->container[i]; // Return value at i
+    return pointer_container->container[jumping_index]; // Return value at i
 }
 
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator++()
 {
-    if (container == nullptr) // If container is not initialized
+    if (pointer_container == nullptr) // If container is not initialized
     {
         throw std::runtime_error("Iterator not initialized"); // Iterator is not initialized
     }
 
-    if (index >= container->container.size()) // If index is out of bounds
+    if (index >= pointer_container->container.size()) // If index is out of bounds
     {
         throw std::runtime_error("Iterator out of bounds"); // Iterator is out of bounds
     }
@@ -377,11 +377,11 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
 
     if (index % 2 != 0)
     {
-        i = container->container.size() - 1 - index / 2; // Calculate i for right side
+        jumping_index = pointer_container->container.size() - 1 - index / 2; // Calculate i for right side
     }
     else // If index is even, go forwards
     {
-        i = index / 2; // Calculate i for left side
+        jumping_index = index / 2; // Calculate i for left side
     }
 
     return *this;
@@ -389,22 +389,22 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
 
 MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::begin()
 {
-    if (container == nullptr) // If container is not initialized
+    if (pointer_container == nullptr) // If container is not initialized
     {
         throw std::runtime_error("Iterator not initialized"); // Iterator is not initialized
     }
 
-    return SideCrossIterator(*container, 0); // Return iterator at index 0
+    return SideCrossIterator(*pointer_container, 0); // Return iterator at index 0
 }
 
 MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::end()
 {
-    if (container == nullptr) // If container is not initialized
+    if (pointer_container == nullptr) // If container is not initialized
     {
         throw std::runtime_error("Iterator not initialized"); // Iterator is not initialized
     }
 
-    return SideCrossIterator(*container, container->container.size()); // Return iterator at index size
+    return SideCrossIterator(*pointer_container, pointer_container->container.size()); // Return iterator at index size
 }
 
 /* PrimeIterator */
